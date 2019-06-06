@@ -16,8 +16,9 @@ produces:
 - application/json
 paths:
   /promotions/{PromotionCode}:
-    x-summary: Promotions
     get:
+      tags:
+      - Promotions
       summary: Get a promotion
       parameters:
         - in: path
@@ -29,7 +30,7 @@ paths:
         200:
           description: Get a promotion
           schema:
-              $ref: '#/definitions/Promotion'
+              $ref: '#/definitions/PromotionResponse'
           examples:
             application/json:
               Code: 3EC33F22ED
@@ -66,8 +67,9 @@ paths:
               ApplyRecurring: NONE
               RecurringChargesNumber: '0'
   /promotions:
-    x-summary: Promotions
     post:
+      tags:
+        - Promotions
       summary: Create a promotion
       parameters:
         - in: body
@@ -75,12 +77,12 @@ paths:
           description: Promotion details
           required: true
           schema: 
-            $ref: '#/definitions/Promotion'
+            $ref: '#/definitions/PromotionRequest'
       responses:
         200:
           description: Get a promotion
           schema:
-              $ref: '#/definitions/Promotion'
+              $ref: '#/definitions/PromotionResponse'
           examples:
             application/json:
               Code: 3EC33F22ED
@@ -118,12 +120,22 @@ paths:
               RecurringChargesNumber: '0'
           
 definitions:
-  Promotion:
-    title: Promotion
+  PromotionCode:
+    title: Promotion code
     type: object
     properties:
       Code:
         type: string
+  PromotionResponse:
+    title: Promotion response
+    type: object
+    allOf:
+      - $ref: '#/definitions/PromotionCode'
+      - $ref: '#/definitions/PromotionRequest'
+  PromotionRequest:
+    title: Promotion
+    type: object
+    properties:
       Name:
         type: string
       Description:
