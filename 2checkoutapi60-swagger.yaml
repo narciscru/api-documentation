@@ -15,10 +15,16 @@ consumes:
 produces:
 - application/json
 paths:
-  /promotions:
+  /promotions/{PromotionCode}:
     x-summary: Promotions
     get:
       summary: Get a promotion
+      parameters:
+        - in: path
+          name: PromotionCode
+          description: Promotion unique identifier
+          required: true
+          type: string
       responses:
         200:
           description: Get a promotion
