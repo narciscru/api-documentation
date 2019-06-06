@@ -65,6 +65,58 @@ paths:
               PublishToAffiliatesNetwork: 0
               ApplyRecurring: NONE
               RecurringChargesNumber: '0'
+  /promotions:
+    x-summary: Promotions
+    post:
+      summary: Create a promotion
+      parameters:
+        - in: body
+          name: Create a promotion
+          description: Promotion details
+          required: true
+          schema: 
+            $ref: '#/definitions/Promotion'
+      responses:
+        200:
+          description: Get a promotion
+          schema:
+              $ref: '#/definitions/Promotion'
+          examples:
+            application/json:
+              Code: 3EC33F22ED
+              Name: 100%
+              Description: ''
+              StartDate: 
+              EndDate: 
+              MaximumOrdersNumber: -1
+              MaximumQuantity: -1
+              InstantDiscount: false
+              Coupon:
+                Type: SINGLE
+                Code: 100procent
+              Enabled: true
+              ChannelType: ECOMMERCE
+              Type: RENEWAL
+              Discount:
+                Type: PERCENT
+                Value: '100'
+              Products:
+              - Code: priceTEST0
+                PricingOptionCodes: []
+                PricingConfigurationCode: 54BCE2AB95
+              PriceThreshold:
+                Amount: 
+                Currency: 
+              Translations:
+              - Name: 100%
+                Language: EN
+              - Name: 100%
+                Language: FR
+              Sources: []
+              PublishToAffiliatesNetwork: 0
+              ApplyRecurring: NONE
+              RecurringChargesNumber: '0'
+          
 definitions:
   Promotion:
     title: Promotion
