@@ -15,106 +15,138 @@ consumes:
 produces:
 - application/json
 paths:
-  /questions:
-    x-summary: Questions Collection
+  /promotions:
+    x-summary: Promotions
     get:
-      summary: List All Questions
+      summary: Get a promotion
       responses:
         200:
-          description: Successful Response
+          description: Get a promotion
           schema:
-            type: array
-            items:
-              $ref: '#/definitions/Question'
+              $ref: '#/definitions/Promotion'
           examples:
             application/json:
-              - question: Favourite programming language?
-                published_at: '2015-08-05T08:40:51.620Z'
-                choices:
-                  - choice: Swift
-                    votes: 2048
-                  - choice: Python
-                    votes: 1024
-                  - choice: Objective-C
-                    votes: 512
-                  - choice: Ruby
-                    votes: 256
-    post:
-      description: >-
-        You may create your own question using this action. It takes a JSON
-        object containing a question and a collection of answers in the
-        form of choices.
-      summary: Create a New Question
-      parameters:
-        - name: body
-          in: body
-          required: true
-          schema:
-            $ref: '#/definitions/QuestionRequest'
-      responses:
-        201:
-          description: ''
-          schema:
-            $ref: '#/definitions/Question'
-          examples:
-            application/json:
-                question: Favourite programming language?
-                published_at: '2015-08-05T08:40:51.620Z'
-                choices:
-                  - choice: Swift
-                    votes: 0
-                  - choice: Python
-                    votes: 0
-                  - choice: Objective-C
-                    votes: 0
-                  - choice: Ruby
-                    votes: 0
+              Code: 3EC33F22ED
+              Name: 100%
+              Description: ''
+              StartDate: 
+              EndDate: 
+              MaximumOrdersNumber: -1
+              MaximumQuantity: -1
+              InstantDiscount: false
+              Coupon:
+                Type: SINGLE
+                Code: 100procent
+              Enabled: true
+              ChannelType: ECOMMERCE
+              Type: RENEWAL
+              Discount:
+                Type: PERCENT
+                Value: '100'
+              Products:
+              - Code: priceTEST0
+                PricingOptionCodes: []
+                PricingConfigurationCode: 54BCE2AB95
+              PriceThreshold:
+                Amount: 
+                Currency: 
+              Translations:
+              - Name: 100%
+                Language: EN
+              - Name: 100%
+                Language: FR
+              Sources: []
+              PublishToAffiliatesNetwork: 0
+              ApplyRecurring: NONE
+              RecurringChargesNumber: '0'
 definitions:
-  Question:
-    title: Question
+  Promotion:
+    title: Promotion
     type: object
     properties:
-      question:
+      Code:
         type: string
-      published_at:
+      Name:
         type: string
-      choices:
+      Description:
+        type: string
+      StartDate:
+        type: string
+        format: date
+      EndDate:
+        type: string
+        format: date
+      MaximumOrdersNumber:
+        type: integer
+      MaximumQuantity:
+        type: integer
+      InstantDiscount:
+        type: boolean
+      Coupon:
+        type: object
+        properties: 
+          Type: 
+            type: string
+          Code:
+            type: string
+      Enabled: 
+        type: boolean
+      ChannelType:
+        type: string
+      Type: 
+        type: string
+      Discount:
+        type: object
+        properties:
+          Type: 
+            type: string
+          Value:
+            type: number
+            format: double
+      Products:
         type: array
         items:
-          $ref: '#/definitions/Choice'
-    required:
-      - question
-      - published_at
-      - choices
-  Choice:
-    title: Choice
-    type: object
-    properties:
-      votes:
-        type: integer
-        format: int32
-      choice:
-        type: string
-    required:
-      - votes
-      - choice
-  QuestionRequest:
-    title: Question Request
-    type: object
-    properties:
-      question:
-        type: string
-      choices:
+          $ref: '#/definitions/PromotionProduct'
+      PriceThreshold:
+        type: object
+        properties:
+          Amount: 
+            type: number
+            format: double
+          Currency:
+            type: string
+      Translations:
+        type: array
+        items:
+          $ref: '#/definitions/PromotionProductTranslation'
+      Sources:
         type: array
         items:
           type: string
-    required:
-      - question
-      - choices
-    example:
-      question: Favourite programming language?
-      choices:
-        - Swift
-        - Python
-        - Objective-C
-        - Ruby
+      PublishToAffiliatesNetwork:
+        type: integer
+      ApplyRecurring:
+        type: string
+      RecurringChargesNumber:
+        type: integer
+      
+  PromotionProduct:
+    title: Promotion Product
+    type: object
+    properties:
+      Code: 
+        type: string
+      PricingOptionCodes:
+        type: array
+        items:
+          type: string
+      PricingConfigurationCode:
+        type: string
+  PromotionProductTranslation:
+    title: Promotion Product Translation
+    type: object
+    properties:
+      Name: 
+        type: string
+      Language:
+        type: string
