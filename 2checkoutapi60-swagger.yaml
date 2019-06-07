@@ -34,7 +34,7 @@ paths:
           examples:
             application/json:
               Code: 3EC33F22ED
-              Name: 100%
+              Name: Test
               Description: ''
               StartDate: 
               EndDate: 
