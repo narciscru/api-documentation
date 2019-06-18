@@ -33,7 +33,7 @@ paths:
               $ref: '#/definitions/PromotionResponse'
           examples:
             application/json:
-              Code: 3EC33F22EDBENY
+              Code: 3EC33F22EDLR
               Name: Test2
               Description: ''
               StartDate: 
@@ -85,7 +85,7 @@ paths:
               $ref: '#/definitions/PromotionResponse'
           examples:
             application/json:
-              Code: 3EC33F22ED
+              Code: 3EC33F22EDLR
               Name: 100%
               Description: ''
               StartDate: 
