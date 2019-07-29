@@ -1,0 +1,361 @@
+openapi: 3.0.0
+servers:
+  - description: API server
+    url: http://secure.avangate.local/rest/6.0
+info:
+  description: Product SKU API
+  version: "6.0"
+  title: Product SKU API
+  contact:
+    email: 'supportplus@2checkout.com'
+  license:
+    name: MIT
+    url: 'https://opensource.org/licenses/MIT'
+
+paths:
+  /productsku/:
+    get:
+      summary: Generate SKU schema
+      operationId: generateSchema
+      description: 'Stock keeping unit or SKU is a number assigned to a particular product by a digital or physical retail store for easy identification and inventory tracking purposes. The SKU number is a string of alphanumeric characters that uniquely identify details such as price, product options and manufacturer of a particular product or service. SKUs are used in order notifications, electronic delivery, export files, etc'
+      parameters:
+        - in: query
+          name: schema
+          description: 'To create a new SKU schema, define the combination criteria from the Settings section below. The SKU number is a unique combination of Product ID (Product Code) plus all or one of the following: Currencies/Volume Discounts/Purchase Types/Pricing Options'
+          required: true
+          style: deepObject
+          explode: true
+          example:
+            Products:
+              - Code: VALID_PRODUCT_CODE_1
+                Currencies:
+                  - USD
+                  - EUR
+                  - GBP
+                  - BGN
+                PurchaseTypes:
+                  - NEW_PRODUCT
+                  - RENEWAL
+                PricingConfigurationCodes:
+                  - Code: VALID_PRICING_CONFIGURATION_CODE_1
+                    VolumeDiscounts:
+                      - - 1
+                        - 3
+                      - - 4
+                        - 10
+                    OptionGroups:
+                      - Code: GROUP_CODE_2
+              - Code: VALID_PRODUCT_CODE_2
+                Currencies:
+                  - USD
+                  - EUR
+                PurchaseTypes:
+                  - NEW_PRODUCT
+                PricingConfigurationCodes:
+                  - Code: VALID_PRICING_CONFIGURATION_CODE_2
+                    OptionGroups:
+                      - Code: GROUP_CODE_1
+          schema:
+            $ref: '#/components/schemas/Request'
+          allowReserved: true
+      responses:
+        '200':
+          description: Returns generated SKU schema
+          content:
+            application/json:
+              examples:
+                Success response:
+                  value:
+                    0:
+                      ProductCode: VALID_PRODUCT_CODE_1
+                      SkuPricingOptions:
+                        '0':
+                          Code: PRICING_OPTION_CODE_1
+                          Details:
+                            '0':
+                              ProductSKU: ''
+                              Currency: USD
+                              FromQty: 1
+                              ToQty: 3
+                              PurchaseType: NEW_PRODUCT
+                              Groups:
+                                '0':
+                                  GroupCode: GROUP_CODE_2
+                                  Options:
+                                    '0':
+                                      Name: option name 4
+                                      Value: option_code_4
+                              Options: eJwBLADT/6G10uOW07exk6mNk7K/oN2Sc4l1lbXToqi5sriTcbOXseWu3pGFnXauuZOolaUc7w==
+                            '1':
+                              ProductSKU: ''
+                              Currency: USD
+                              FromQty: 1
+                              ToQty: 3
+                              PurchaseType: NEW_PRODUCT
+                              Groups:
+                                '0':
+                                  GroupCode: GROUP_CODE_2
+                                  Options:
+                                    '0':
+                                      Name: option name 5
+                                      Value: option_code_5
+                              Options: eJwBLADT/6G10uOW07exk6mNk7K/oN2Sc4l1lbXToqi5sriTcbOXseWu3pGFp3auuZOoleEc+Q==
+                          Errors: []
+                    1:
+                      ProductCode: VALID_PRODUCT_CODE_2
+                      SkuPricingOptions:
+                        '0':
+                          Code: PRICING_OPTION_CODE_2
+                          Details:
+                            '0':
+                              ProductSKU: ''
+                              Currency: USD
+                              FromQty: 1
+                              ToQty: 99999
+                              PurchaseType: NEW_PRODUCT
+                              Groups:
+                                '0':
+                                  GroupCode: GRUP_1
+                                  Options:
+                                    '0':
+                                      Name: option name 1
+                                      Value: option_code_1
+                              Options: eJwBLADT/6G10uOW07exk6mNk7KvrpaSc4l1lbXToqi5sriTcbOXseWu3ZGrlXauuZOojh8cww==
+                            '1':
+                              ProductSKU: ''
+                              Currency: USD
+                              FromQty: 1
+                              ToQty: 99999
+                              PurchaseType: NEW_PRODUCT
+                              Groups:
+                                '0':
+                                  GroupCode: GROUP_CODE_1
+                                  Options:
+                                    '0':
+                                      Name: option name 2
+                                      Value: option_code_2
+                              Options: eJwBLADT/6G10uOW07exk6mNk7KvrpaSc4l1lbXToqi5sriTcbOXseWu3ZGrmXauuZOojjccxw==
+                            '2':
+                              ProductSKU: ''
+                              Currency: USD
+                              FromQty: 1
+                              ToQty: 99999
+                              PurchaseType: NEW_PRODUCT
+                              Groups:
+                                '0':
+                                  GroupCode: GROUP_CODE_1
+                                  Options:
+                                    '0':
+                                      Name: option name 3
+                                      Value: option_code_3
+                              Options: eJwBLADT/6G10uOW07exk6mNk7KvrpaSc4l1lbXToqi5sriTcbOXseWu3ZGrnXauuZOojk8cyw==
+  
+                Validation error - Invalid Product Code provided:
+                  value:
+                    ProductCode: INVALID_PRODUCT_CODE
+                    SkuPricingOptions:
+                      Code: ""
+                      Details: null
+                      Errors: [ "Product code INVALID_PRODUCT_CODE doesn't belong to this vendor" ]
+                
+                Validation error - Invalid Pricing Configuration Code provided:
+                  value:
+                    ProductCode: VALID_PRODUCT_CODE
+                    SkuPricingOptions:
+                      Code: ""
+                      Details: null
+                      Errors: [ "Pricing Configuration Code INVALID_PRICING_CONFIGURATION_CODE is not valid for product code VALID_PRODUCT_CODE" ]
+                
+                Validation error - Duplicated Pricing Configuration Code provided:
+                  value:
+                    ProductCode: VALID_PRODUCT_CODE
+                    SkuPricingOptions:
+                      Code: ""
+                      Details: null
+                      Errors: [ "Pricing Configuration Code VALID_PRICING_CONFIGURATION_CODE is duplicated for product code VALID_PRODUCT_CODE" ]
+                      
+                Validation error - Invalid Option Group Code provided:
+                  value:
+                    ProductCode: VALID_PRODUCT_CODE
+                    SkuPricingOptions:
+                      Code: ""
+                      Details: null
+                      Errors: [ "Couldn't find any valid pricing options for groupCode INVALID_GROUP_CODE and pricing option code PRICING_CONFIGURATION_CODE" ]
+                      
+                Validation error - Invalid Purchase Type provided:
+                  value:
+                    ProductCode: VALID_PRODUCT_CODE
+                    SkuPricingOptions:
+                      Code: ""
+                      Details: null
+                      Errors: [ "We couldn't validate the following purchase types for product code : INVALID_PURCHASE_TYPE" ]
+                      
+                Validation error - Invalid Currency provided:
+                  value:
+                    ProductCode: VALID_PRODUCT_CODE
+                    SkuPricingOptions:
+                      Code: ""
+                      Details: null
+                      Errors: [ "We couldn't validate the following currencies: USD_INVALID" ]
+                      
+                Validation error - Invalid Volume Discount Interval provided:
+                  value:
+                    ProductCode: VALID_PRODUCT_CODE
+                    SkuPricingOptions:
+                      Code: ""
+                      Details: null
+                      Errors: [ "We could't validate all the requested volumes: [[1,3],[4,10]]. Please make sure that they are properly set for this pricing configuration code." ]
+                      
+                Validation error - Too many possible combinations:
+                  value:
+                    ProductCode: VALID_PRODUCT_CODE
+                    SkuPricingOptions:
+                      Code: ""
+                      Details: null
+                      Errors: [ "There are too many possible combinations available for these input items." ]
+
+        '401':
+          description: Authentication failure
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error_code:
+                    type: string
+                    example: AUTHENTICATION_ERROR
+                  message:
+                    type: string
+                    example: This resource needs authentication
+components:
+  schemas:
+    Request:
+      type: object
+      required:
+        - Code
+        - Currencies
+        - PurchaseTypes
+        - PricingConfigurationCodes
+      properties:
+        Code:
+          type: string
+          example: "PRODUCT_CODE"
+        Currencies:
+          type: array
+          items:
+            type: string
+            enum: ['USD', 'RON', 'EUR']
+        PurchaseTypes:
+          type: array
+          items:
+            type: string
+            enum: ['NEW_PRODUCT', 'RENEWAL']
+        PricingConfigurationCodes:
+          type: array
+          items:
+            $ref: '#/components/schemas/PricingConfigurationCodes'
+
+    Response:
+      type: object
+      properties:
+        ProductCode:
+          type: string
+        SkuPricingOptions:
+          type: object
+          properties:
+            0:
+              $ref: '#/components/schemas/SkuPricingOptionsDetails'
+            1:
+              $ref: '#/components/schemas/SkuPricingOptionsDetails'
+
+    SkuPricingOptionsDetails:
+      type: object
+      properties:
+        Code:
+          type: string
+          example: 'PRODUCT_CODE_1'
+        Details:
+          type: object
+          properties:
+            0:
+              $ref : '#/components/schemas/SkuPricingOptions'
+            1:
+              $ref : '#/components/schemas/SkuPricingOptions'
+        Errors:
+          type: array
+          items:
+            type: string
+            example: ''
+
+    SkuPricingOptions:
+      type: object
+      properties:
+        ProductSKU:
+          type: string
+          example: ""
+        Currency:
+          type: string
+          example: "USD"
+        FromQty:
+          type: integer
+          example: 1
+        ToQty:
+          type: integer
+          example: 5
+        PurchaseType:
+          type: string
+          example: "NEW_PRODUCT"
+        Groups:
+          type: object
+          properties:
+            0:
+              type: object
+              properties:
+                GroupCode:
+                  type: string
+                  example: "OPTION_GROUP_CODE_1"
+                Options:
+                  type: object
+                  properties:
+                    0:
+                      type: object
+                      properties:
+                        Name:
+                          type: string
+                          example: 'Option label #1'
+                        Value:
+                          type: string
+                          example: 'OPTION_CODE_1'
+        Options:
+          type: string
+          example: 'eJwBLADT/6G10uOW07exk6mNk7K/oN2Sc4l1lbXToqi5sriTcbOXseWu3pGFp3auuZOoleEc+Q=='
+
+    PricingConfigurationCodes:
+      type: object
+      required:
+        - Code
+      properties:
+        Code:
+          type: string
+          example: "PRICING_CONFIGURATION_CODE"
+        VolumeDiscounts:
+          type: array
+          items:
+            type: array
+            items:
+              type: integer
+              enum: [[1, 5], [6,10], [11,15]]
+          example: [[1, 5], [6,10]]
+        OptionGroups:
+          type: array
+          items:
+            type: object
+            properties:
+              Code:
+                type: string
+                example: "OPTION_GROUP_CODE_1"
+          example:
+            - Code: "OPTION_GROUP_CODE_1"
+            - Code: "OPTION_GROUP_CODE_2"
+
+        
